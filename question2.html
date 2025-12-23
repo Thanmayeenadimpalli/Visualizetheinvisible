@@ -1,0 +1,1779 @@
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ship Packages Capacity - Binary Search Visualizer</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <style>
+        body {
+            box-sizing: border-box;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #87CEEB 0%, #87CEFA 25%, #6CB4EE 50%, #4A90E2 75%, #5DADE2 100%);
+            color: #1a237e;
+            position: relative;
+            overflow-x: hidden;
+            animation: ocean-wave 8s ease-in-out infinite;
+        }
+
+        @keyframes ocean-wave {
+            0%, 100% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        /* Animated Background */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .floating-shape {
+            position: absolute;
+            opacity: 0.15;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .shape-1 {
+            top: 10%;
+            left: 5%;
+            font-size: 60px;
+            animation-delay: 0s;
+            animation-duration: 25s;
+        }
+
+        .shape-2 {
+            top: 60%;
+            left: 80%;
+            font-size: 80px;
+            animation-delay: 3s;
+            animation-duration: 30s;
+        }
+
+        .shape-3 {
+            top: 30%;
+            left: 70%;
+            font-size: 50px;
+            animation-delay: 6s;
+            animation-duration: 22s;
+        }
+
+        .shape-4 {
+            top: 80%;
+            left: 15%;
+            font-size: 70px;
+            animation-delay: 2s;
+            animation-duration: 28s;
+        }
+
+        .shape-5 {
+            top: 45%;
+            left: 10%;
+            font-size: 55px;
+            animation-delay: 8s;
+            animation-duration: 26s;
+        }
+
+        .shape-6 {
+            top: 20%;
+            left: 90%;
+            font-size: 65px;
+            animation-delay: 4s;
+            animation-duration: 24s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translate(0, 0) rotate(0deg) scale(1);
+            }
+            25% {
+                transform: translate(30px, -40px) rotate(90deg) scale(1.1);
+            }
+            50% {
+                transform: translate(-20px, -80px) rotate(180deg) scale(0.9);
+            }
+            75% {
+                transform: translate(-40px, -40px) rotate(270deg) scale(1.05);
+            }
+        }
+
+        /* Sailing Ships Animation */
+        .sailing-ship {
+            position: absolute;
+            font-size: 80px;
+            opacity: 0.25;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+            animation: sail linear infinite;
+        }
+
+        .ship-1 {
+            top: 15%;
+            animation-duration: 35s;
+            animation-delay: 0s;
+        }
+
+        .ship-2 {
+            top: 45%;
+            animation-duration: 42s;
+            animation-delay: 8s;
+        }
+
+        .ship-3 {
+            top: 70%;
+            animation-duration: 38s;
+            animation-delay: 15s;
+        }
+
+        @keyframes sail {
+            0% {
+                left: -100px;
+                transform: translateY(0) rotate(-5deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(5deg);
+            }
+            100% {
+                left: calc(100% + 100px);
+                transform: translateY(0) rotate(-5deg);
+            }
+        }
+
+        /* Animated Water Ripples */
+        .water-ripples {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            overflow: hidden;
+        }
+
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            border: 2px solid rgba(33, 150, 243, 0.3);
+            animation: ripple-effect 6s infinite ease-out;
+        }
+
+        .ripple-1 {
+            top: 20%;
+            left: 30%;
+            width: 50px;
+            height: 50px;
+            animation-delay: 0s;
+        }
+
+        .ripple-2 {
+            top: 60%;
+            left: 70%;
+            width: 70px;
+            height: 70px;
+            animation-delay: 2s;
+        }
+
+        .ripple-3 {
+            top: 40%;
+            left: 50%;
+            width: 60px;
+            height: 60px;
+            animation-delay: 4s;
+        }
+
+        @keyframes ripple-effect {
+            0% {
+                transform: scale(0);
+                opacity: 0.6;
+            }
+            100% {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+        /* Seagulls Animation */
+        .seagull {
+            position: absolute;
+            font-size: 32px;
+            opacity: 0.3;
+            animation: fly-across linear infinite;
+        }
+
+        .seagull-1 {
+            top: 10%;
+            animation-duration: 25s;
+            animation-delay: 0s;
+        }
+
+        .seagull-2 {
+            top: 25%;
+            animation-duration: 30s;
+            animation-delay: 10s;
+        }
+
+        .seagull-3 {
+            top: 18%;
+            animation-duration: 28s;
+            animation-delay: 20s;
+        }
+
+        @keyframes fly-across {
+            0% {
+                left: -50px;
+                transform: translateY(0);
+            }
+            25% {
+                transform: translateY(-15px);
+            }
+            50% {
+                transform: translateY(0);
+            }
+            75% {
+                transform: translateY(-10px);
+            }
+            100% {
+                left: calc(100% + 50px);
+                transform: translateY(0);
+            }
+        }
+
+        /* Wave Animation */
+        .wave-container {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 150px;
+            overflow: hidden;
+        }
+
+        .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 200%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z' fill='%2381d4fa' fill-opacity='0.25'/%3E%3C/svg%3E") repeat-x;
+            animation: wave 15s linear infinite;
+        }
+
+        .wave:nth-child(2) {
+            bottom: -10px;
+            opacity: 0.6;
+            animation-delay: -5s;
+            animation-duration: 20s;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z' fill='%234fc3f7' fill-opacity='0.3'/%3E%3C/svg%3E") repeat-x;
+        }
+
+        @keyframes wave {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        /* Binary particles */
+        .binary-particle {
+            position: absolute;
+            color: #1976d2;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            font-weight: bold;
+            opacity: 0.2;
+            animation: fall linear infinite;
+            user-select: none;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-100px);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.2;
+            }
+            90% {
+                opacity: 0.2;
+            }
+            100% {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+        }
+
+        .main-container {
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            padding: 32px 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .content-wrapper {
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 32px;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .main-title {
+            font-size: 44px;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+            text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.4);
+            background: linear-gradient(135deg, #1e88e5 0%, #0d47a1 100%);
+            padding: 16px 28px;
+            border-radius: 12px;
+            display: inline-block;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .subtitle {
+            font-size: 17px;
+            color: #ffffff;
+            font-weight: 600;
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
+            background: rgba(13, 71, 161, 0.7);
+            padding: 8px 20px;
+            border-radius: 8px;
+            display: inline-block;
+            margin-top: 12px;
+        }
+
+        /* Problem Description Box */
+        .problem-box {
+            background: linear-gradient(135deg, #fff9c4 0%, #fff59d 100%);
+            border-left: 5px solid #f57f17;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(245, 127, 23, 0.2);
+        }
+
+        .problem-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #e65100;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .problem-text {
+            font-size: 15px;
+            color: #bf360c;
+            line-height: 1.7;
+            margin-bottom: 14px;
+        }
+
+        .problem-example {
+            background: white;
+            border-radius: 8px;
+            padding: 14px;
+            margin-top: 12px;
+        }
+
+        .example-title {
+            font-weight: 700;
+            color: #e65100;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .example-content {
+            font-family: 'Courier New', monospace;
+            color: #4e342e;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        /* Card */
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 28px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+            margin-bottom: 20px;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #0d47a1;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Input Section */
+        .input-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .input-group label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #37474f;
+        }
+
+        .input-group input {
+            padding: 12px 14px;
+            border: 2px solid #e1f5fe;
+            border-radius: 10px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            background: #f5f5f5;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #42a5f5;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(66, 165, 245, 0.1);
+        }
+
+        /* Buttons */
+        .button-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #42a5f5 0%, #1e88e5 100%);
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(66, 165, 245, 0.4);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #66bb6a 0%, #43a047 100%);
+            color: white;
+        }
+
+        .btn-success:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(102, 187, 106, 0.4);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #ffa726 0%, #fb8c00 100%);
+            color: white;
+        }
+
+        .btn-warning:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(255, 167, 38, 0.4);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        /* Button Click Animation */
+        @keyframes buttonWave {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            }
+            50% {
+                transform: scale(0.95);
+                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 6px 20px rgba(33, 150, 243, 0.5);
+            }
+        }
+
+        .btn.clicked {
+            animation: buttonWave 0.4s ease;
+        }
+
+        /* Ocean Effect on Button Click */
+        .ocean-splash {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            font-size: 40px;
+            animation: splash 1.5s ease-out forwards;
+        }
+
+        @keyframes splash {
+            0% {
+                transform: translate(-50%, -50%) scale(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(3) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Ship Sail Effect */
+        .sailing-effect {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            font-size: 60px;
+            animation: sailAway 2s ease-out forwards;
+        }
+
+        @keyframes sailAway {
+            0% {
+                transform: translateX(0) translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(200px) translateY(-100px) rotate(15deg);
+                opacity: 0;
+            }
+        }
+
+        /* Anchor Drop Effect */
+        .anchor-drop {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            font-size: 50px;
+            animation: dropAnchor 1.2s ease-in forwards;
+        }
+
+        @keyframes dropAnchor {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* Mode Control */
+        .mode-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            margin-top: 16px;
+            padding: 16px;
+            background: #f5f5f5;
+            border-radius: 10px;
+        }
+
+        .mode-label {
+            font-weight: 600;
+            color: #37474f;
+            font-size: 15px;
+        }
+
+        .mode-toggle {
+            display: flex;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .mode-option {
+            padding: 10px 20px;
+            background: white;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            color: #666;
+            transition: all 0.3s ease;
+        }
+
+        .mode-option.active {
+            background: linear-gradient(135deg, #42a5f5 0%, #1e88e5 100%);
+            color: white;
+        }
+
+        .mode-option:hover:not(.active) {
+            background: #f5f5f5;
+        }
+
+        /* Complexity Section */
+        .complexity-section {
+            background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 16px;
+        }
+
+        .complexity-header {
+            font-size: 18px;
+            font-weight: 700;
+            color: #4a148c;
+            text-align: center;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .complexity-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .complexity-card {
+            background: white;
+            border-radius: 10px;
+            padding: 18px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid #7e57c2;
+        }
+
+        .complexity-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #6a1b9a;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .complexity-value {
+            font-size: 24px;
+            font-weight: 800;
+            color: #4a148c;
+            font-family: 'Courier New', monospace;
+            margin-bottom: 8px;
+        }
+
+        .complexity-desc {
+            font-size: 12px;
+            color: #7b1fa2;
+            line-height: 1.5;
+        }
+
+        .iteration-badge {
+            background: linear-gradient(135deg, #ff6f00 0%, #e65100 100%);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 700;
+            display: inline-block;
+            margin-top: 12px;
+            box-shadow: 0 3px 8px rgba(255, 111, 0, 0.3);
+        }
+
+        /* Binary Search Section */
+        .search-area {
+            background: linear-gradient(135deg, #e8eaf6 0%, #c5cae9 100%);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 16px;
+        }
+
+        .search-header {
+            font-size: 16px;
+            font-weight: 700;
+            color: #3f51b5;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .search-values {
+            display: flex;
+            justify-content: space-around;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .value-card {
+            flex: 1;
+            text-align: center;
+            padding: 18px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .value-card.highlight {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(126, 87, 194, 0.3);
+        }
+
+        .value-card-low {
+            border-left: 4px solid #66bb6a;
+        }
+
+        .value-card-mid {
+            border-left: 4px solid #ffa726;
+        }
+
+        .value-card-high {
+            border-left: 4px solid #ef5350;
+        }
+
+        .value-label {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #78909c;
+            margin-bottom: 6px;
+            letter-spacing: 0.5px;
+        }
+
+        .value-number {
+            font-size: 32px;
+            font-weight: 800;
+            color: #263238;
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            height: 50px;
+            background: #cfd8dc;
+            border-radius: 25px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress-fill {
+            position: absolute;
+            height: 100%;
+            background: linear-gradient(90deg, #66bb6a, #43a047);
+            transition: all 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        /* Decision Panel */
+        .decision-panel {
+            background: linear-gradient(135deg, #ffe0b2 0%, #ffcc80 100%);
+            border-left: 5px solid #f57c00;
+            border-radius: 10px;
+            padding: 18px 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 12px rgba(245, 124, 0, 0.2);
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+        }
+
+        .decision-content {
+            width: 100%;
+        }
+
+        .decision-title {
+            font-weight: 700;
+            color: #e65100;
+            margin-bottom: 8px;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .decision-text {
+            font-size: 16px;
+            font-weight: 600;
+            color: #bf360c;
+            line-height: 1.5;
+        }
+
+        .decision-highlight {
+            background: white;
+            padding: 4px 10px;
+            border-radius: 6px;
+            display: inline-block;
+            margin: 0 2px;
+            font-weight: 800;
+            color: #d84315;
+        }
+
+        /* Explanation Box */
+        .explanation-box {
+            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+            border-left: 5px solid #ff9800;
+            border-radius: 10px;
+            padding: 18px 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(255, 152, 0, 0.15);
+        }
+
+        .explanation-text {
+            font-size: 16px;
+            font-weight: 600;
+            color: #e65100;
+            line-height: 1.5;
+        }
+
+        /* Ship Visualization */
+        .ship-section {
+            background: linear-gradient(180deg, #e0f7fa 0%, #b2ebf2 100%);
+            border-radius: 12px;
+            padding: 24px;
+            min-height: 350px;
+        }
+
+        .ship-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .ship-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #006064;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .capacity-badge {
+            background: white;
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-weight: 700;
+            color: #00838f;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            font-size: 14px;
+        }
+
+        /* Days Container */
+        .days-area {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .day-card {
+            background: white;
+            border-radius: 10px;
+            padding: 16px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            animation: slideInLeft 0.4s ease-out;
+        }
+
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .day-card.current {
+            border-color: #ffa726;
+            box-shadow: 0 6px 20px rgba(255, 167, 38, 0.3);
+        }
+
+        .day-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .day-label {
+            font-size: 16px;
+            font-weight: 700;
+            color: #263238;
+        }
+
+        .day-weight {
+            font-size: 14px;
+            font-weight: 600;
+            color: #546e7a;
+        }
+
+        .packages-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .package-box {
+            min-width: 65px;
+            padding: 14px 18px;
+            background: linear-gradient(135deg, #42a5f5 0%, #1e88e5 100%);
+            color: white;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 18px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(66, 165, 245, 0.3);
+            transition: all 0.3s ease;
+            animation: popIn 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .package-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 14px rgba(66, 165, 245, 0.4);
+        }
+
+        .package-box::after {
+            content: ' kg';
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 50px 20px;
+            color: #90a4ae;
+            font-size: 15px;
+        }
+
+        .empty-icon {
+            font-size: 56px;
+            margin-bottom: 12px;
+            opacity: 0.6;
+        }
+
+        /* Result Section */
+        .result-section {
+            background: linear-gradient(135deg, #c8e6c9 0%, #a5d6a7 100%);
+            border-radius: 16px;
+            padding: 36px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(76, 175, 80, 0.3);
+            animation: scaleIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        @keyframes scaleIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .result-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1b5e20;
+            margin-bottom: 16px;
+        }
+
+        .result-value {
+            font-size: 56px;
+            font-weight: 900;
+            color: #2e7d32;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 8px;
+        }
+
+        .result-subtitle {
+            font-size: 16px;
+            color: #388e3c;
+            font-weight: 600;
+        }
+
+        /* Info Box */
+        .info-box {
+            background: #e0f2f1;
+            border-left: 4px solid #26a69a;
+            border-radius: 8px;
+            padding: 14px 18px;
+            margin-top: 16px;
+        }
+
+        .info-title {
+            font-weight: 700;
+            color: #00695c;
+            margin-bottom: 6px;
+            font-size: 14px;
+        }
+
+        .info-content {
+            color: #00897b;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 32px;
+            }
+
+            .subtitle {
+                font-size: 15px;
+            }
+
+            .input-row {
+                grid-template-columns: 1fr;
+            }
+
+            .search-values {
+                flex-direction: column;
+            }
+
+            .value-number {
+                font-size: 26px;
+            }
+
+            .result-value {
+                font-size: 42px;
+            }
+
+            .button-row {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .complexity-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
+ </head>
+ <body class="h-full"><!-- Animated Background -->
+  <div class="animated-bg"><!-- Water Ripples -->
+   <div class="water-ripples">
+    <div class="ripple ripple-1"></div>
+    <div class="ripple ripple-2"></div>
+    <div class="ripple ripple-3"></div>
+   </div><!-- Sailing Ships -->
+   <div class="sailing-ship ship-1">
+    🚢
+   </div>
+   <div class="sailing-ship ship-2">
+    ⛴️
+   </div>
+   <div class="sailing-ship ship-3">
+    🛳️
+   </div><!-- Seagulls -->
+   <div class="seagull seagull-1">
+    🕊️
+   </div>
+   <div class="seagull seagull-2">
+    🦅
+   </div>
+   <div class="seagull seagull-3">
+    🕊️
+   </div><!-- Floating Shapes -->
+   <div class="floating-shape shape-1">
+    ⚓
+   </div>
+   <div class="floating-shape shape-2">
+    📦
+   </div>
+   <div class="floating-shape shape-3">
+    🧭
+   </div>
+   <div class="floating-shape shape-4">
+    📊
+   </div>
+   <div class="floating-shape shape-5">
+    🔍
+   </div>
+   <div class="floating-shape shape-6">
+    ⚡
+   </div><!-- Wave Animation -->
+   <div class="wave-container">
+    <div class="wave"></div>
+    <div class="wave"></div>
+   </div>
+  </div>
+  <div class="main-container">
+   <div class="content-wrapper"><!-- Header -->
+    <header class="header">
+     <h1 class="main-title" id="mainTitle">🚢 Ship Packages Capacity Visualizer</h1>
+     <p class="subtitle" id="subtitle">Binary Search Algorithm to Find Minimum Ship Capacity</p>
+    </header><!-- Input Card -->
+    <div class="card">
+     <h2 class="card-title"><span>🔨</span> Configuration</h2>
+     <div class="input-row">
+      <div class="input-group"><label for="packagesInput">Package Weights (comma separated)</label> <input type="text" id="packagesInput" placeholder="e.g., 1,2,3,4,5,6,7,8,9,10" value="1,2,3,4,5,6,7,8,9,10">
+      </div>
+      <div class="input-group"><label for="daysInput">Number of Days (D)</label> <input type="number" id="daysInput" placeholder="e.g., 5" value="5" min="1">
+      </div>
+     </div>
+     <div class="button-row"><button class="btn btn-primary" onclick="generate()" id="generateBtn"> ⚡ Generate </button> <button class="btn btn-success" onclick="runAlgorithm()" id="runBtn" disabled> 🚀 Run Algorithm </button> <button class="btn btn-warning" onclick="reset()" id="resetBtn"> 🔄 Reset </button>
+     </div>
+     <div class="mode-section"><span class="mode-label">🎯 Execution Mode:</span>
+      <div class="mode-toggle"><button class="mode-option active" data-mode="learning" onclick="selectMode('learning')"> 📖 Learning Mode (Detailed) </button> <button class="mode-option" data-mode="demo" onclick="selectMode('demo')"> ⚡ Demo Mode (Fast) </button>
+      </div>
+     </div>
+    </div><!-- Complexity Analysis Card -->
+    <div class="card" id="complexityCard" style="display: none;">
+     <h2 class="card-title"><span></span> Algorithm Complexity</h2>
+     <div class="complexity-section">
+      <div class="complexity-header"><span></span> Performance Analysis
+      </div>
+      <div class="complexity-grid">
+       <div class="complexity-card">
+        <div class="complexity-label">
+         ⏰ Time Complexity
+        </div>
+        <div class="complexity-value" id="timeComplexity">
+         O(n log m)
+        </div>
+        <div class="complexity-desc" id="timeDesc">
+         Binary search: O(log m) iterations<br>
+          Each iteration checks all n packages: O(n)<br>
+          Total: O(n × log m)
+        </div>
+       </div>
+       <div class="complexity-card">
+        <div class="complexity-label">
+         💾 Space Complexity
+        </div>
+        <div class="complexity-value" id="spaceComplexity">
+         O(1)
+        </div>
+        <div class="complexity-desc" id="spaceDesc">
+         Only using constant extra space<br>
+          Variables: low, high, mid, current weight<br>
+          No additional data structures needed
+        </div>
+       </div>
+      </div>
+      <div style="text-align: center;">
+       <div class="iteration-badge" id="iterationBadge">
+        Iteration: 0 / ?
+       </div>
+      </div>
+     </div>
+    </div><!-- Binary Search Card -->
+    <div class="card" id="searchCard" style="display: none;">
+     <h2 class="card-title"><span>🔍</span> Binary Search Progress</h2>
+     <div class="search-area">
+      <div class="search-header">
+       Search Space: [Low ← Mid → High]
+      </div>
+      <div class="search-values">
+       <div class="value-card value-card-low">
+        <div class="value-label">
+         Low (Min)
+        </div>
+        <div class="value-number" id="lowValue">
+         -
+        </div>
+       </div>
+       <div class="value-card value-card-mid highlight">
+        <div class="value-label">
+         Mid (Testing)
+        </div>
+        <div class="value-number" id="midValue">
+         -
+        </div>
+       </div>
+       <div class="value-card value-card-high">
+        <div class="value-label">
+         High (Max)
+        </div>
+        <div class="value-number" id="highValue">
+         -
+        </div>
+       </div>
+      </div>
+      <div class="progress-bar">
+       <div class="progress-fill" id="progressFill">
+        Searching...
+       </div>
+      </div>
+     </div>
+     <div class="info-box">
+      <div class="info-title">
+       💡 Algorithm Approach:
+      </div>
+      <div class="info-content">
+       Binary search on answer space where n = packages count, m = sum of all weights. Low = max(weights), High = sum(weights). For each mid, greedily check if we can ship within D days.
+      </div>
+     </div>
+    </div><!-- Decision Panel -->
+    <div class="decision-panel" id="decisionPanel" style="display: none;">
+     <div class="decision-content">
+      <div class="decision-title"><span>🧠</span> Decision Reasoning
+      </div>
+      <div class="decision-text" id="decisionText">
+       Analyzing capacity...
+      </div>
+     </div>
+    </div><!-- Explanation Box -->
+    <div class="explanation-box" id="explanationBox" style="display: none;">
+     <p class="explanation-text" id="explanationText">Ready to begin...</p>
+    </div><!-- Visualization Card -->
+    <div class="card">
+     <h2 class="card-title"><span>📦</span> Package Loading Visualization</h2>
+     <div class="ship-section">
+      <div class="ship-header">
+       <div class="ship-title"><span style="font-size: 28px;">🚢</span> <span>Cargo Ship</span>
+       </div>
+       <div class="capacity-badge" id="capacityBadge">
+        Capacity: - kg
+       </div>
+      </div>
+      <div class="days-area" id="daysArea">
+       <div class="empty-state">
+        <div class="empty-icon">
+         📦
+        </div>
+        <div>
+         No packages loaded. Click Generate to begin.
+        </div>
+       </div>
+      </div>
+     </div>
+    </div><!-- Result Card -->
+    <div class="card" id="resultCard" style="display: none;">
+     <div class="result-section">
+      <div class="result-title">
+       🎉 Minimum Ship Capacity Required
+      </div>
+      <div class="result-value" id="resultValue">
+       -
+      </div>
+      <div class="result-subtitle">
+       kg per day
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
+  <script>
+        const defaultConfig = {
+            main_title: "🚢 Ship Packages Capacity Visualizer",
+            subtitle: "Binary Search Algorithm to Find Minimum Ship Capacity"
+        };
+
+        // State
+        let packages = [];
+        let targetDays = 0;
+        let low = 0;
+        let high = 0;
+        let mid = 0;
+        let answer = -1;
+        let isRunning = false;
+        let currentMode = 'learning'; // 'learning' or 'demo'
+        let currentIteration = 0;
+        let maxIterations = 0;
+
+        // Mode selection
+        function selectMode(mode) {
+            currentMode = mode;
+            document.querySelectorAll('.mode-option').forEach(opt => {
+                opt.classList.remove('active');
+            });
+            document.querySelector(`[data-mode="${mode}"]`).classList.add('active');
+        }
+
+        // Add button click effects
+        function addOceanEffect(e, button) {
+            button.classList.add('clicked');
+            setTimeout(() => button.classList.remove('clicked'), 400);
+
+            const effects = ['💧', '🌊', '⚓', '🐚', '⛵', '🐟', '🐠', '🦈', '🐙', '🌺'];
+            const effect = effects[Math.floor(Math.random() * effects.length)];
+            
+            const splash = document.createElement('div');
+            
+            const effectTypes = ['ocean-splash', 'sailing-effect', 'anchor-drop'];
+            const chosenEffect = effectTypes[Math.floor(Math.random() * effectTypes.length)];
+            
+            splash.className = chosenEffect;
+            splash.textContent = effect;
+            splash.style.left = e.clientX + 'px';
+            splash.style.top = e.clientY + 'px';
+            
+            document.body.appendChild(splash);
+            
+            setTimeout(() => splash.remove(), 2000);
+        }
+
+        // Attach to all buttons
+        document.addEventListener('DOMContentLoaded', () => {
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    if (!this.disabled) {
+                        addOceanEffect(e, this);
+                    }
+                });
+            });
+        });
+
+        // Update complexity display
+        function updateComplexity() {
+            const n = packages.length;
+            const m = packages.reduce((a, b) => a + b, 0);
+            
+            document.getElementById('timeComplexity').textContent = `O(n log m)`;
+            document.getElementById('timeDesc').innerHTML = `
+                Binary search: O(log m) iterations where m = ${m}<br>
+                Each iteration checks all n = ${n} packages: O(n)<br>
+                Total: O(${n} × log ${m}) ≈ ${n * Math.ceil(Math.log2(m))} operations
+            `;
+            
+            document.getElementById('spaceComplexity').textContent = `O(1)`;
+            document.getElementById('spaceDesc').innerHTML = `
+                Only using constant extra space<br>
+                Variables: low, high, mid, current weight, day counter<br>
+                No additional data structures needed
+            `;
+            
+            document.getElementById('iterationBadge').textContent = `Iteration: ${currentIteration} / ${maxIterations}`;
+        }
+
+        // Generate problem
+        function generate() {
+            if (isRunning) return;
+
+            const packagesInput = document.getElementById('packagesInput').value.trim();
+            const daysInput = parseInt(document.getElementById('daysInput').value);
+
+            if (!packagesInput || isNaN(daysInput) || daysInput <= 0) {
+                showExplanation('⚠️ Please enter valid package weights and number of days.');
+                return;
+            }
+
+            packages = packagesInput.split(',')
+                .map(x => parseInt(x.trim()))
+                .filter(x => !isNaN(x) && x > 0);
+
+            if (packages.length === 0) {
+                showExplanation('⚠️ Invalid package weights. Enter comma-separated positive numbers.');
+                return;
+            }
+
+            targetDays = daysInput;
+
+            if (targetDays > packages.length) {
+                showExplanation('⚠️ Number of days cannot exceed number of packages.');
+                return;
+            }
+
+            // Initialize
+            low = Math.max(...packages);
+            high = packages.reduce((a, b) => a + b, 0);
+            answer = -1;
+            currentIteration = 0;
+            maxIterations = Math.ceil(Math.log2(high - low + 1));
+
+            document.getElementById('searchCard').style.display = 'block';
+            document.getElementById('complexityCard').style.display = 'block';
+            document.getElementById('resultCard').style.display = 'none';
+            document.getElementById('decisionPanel').style.display = 'none';
+
+            updateComplexity();
+
+            showExplanation(`✅ Problem initialized! ${packages.length} packages to ship in ${targetDays} days. Binary search will take maximum ${maxIterations} iterations.`);
+
+            displayEmpty();
+
+            document.getElementById('runBtn').disabled = false;
+        }
+
+        // Reset
+        function reset() {
+            isRunning = false;
+            answer = -1;
+            currentIteration = 0;
+
+            document.getElementById('searchCard').style.display = 'none';
+            document.getElementById('complexityCard').style.display = 'none';
+            document.getElementById('resultCard').style.display = 'none';
+            document.getElementById('explanationBox').style.display = 'none';
+            document.getElementById('decisionPanel').style.display = 'none';
+
+            displayEmpty();
+
+            document.getElementById('runBtn').disabled = true;
+            document.getElementById('generateBtn').disabled = false;
+        }
+
+        // Display empty
+        function displayEmpty() {
+            const container = document.getElementById('daysArea');
+            container.innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-icon">📦</div>
+                    <div>No packages loaded. Click Generate to begin.</div>
+                </div>
+            `;
+            document.getElementById('capacityBadge').textContent = 'Capacity: - kg';
+        }
+
+        // Show explanation
+        function showExplanation(text) {
+            const box = document.getElementById('explanationBox');
+            const textEl = document.getElementById('explanationText');
+            box.style.display = 'block';
+            textEl.textContent = text;
+        }
+
+        // Show decision
+        function showDecision(text) {
+            const panel = document.getElementById('decisionPanel');
+            const textEl = document.getElementById('decisionText');
+            panel.style.display = 'flex';
+            textEl.innerHTML = text;
+        }
+
+        // Update search display
+        function updateSearchDisplay() {
+            document.getElementById('lowValue').textContent = low;
+            document.getElementById('midValue').textContent = mid;
+            document.getElementById('highValue').textContent = high;
+
+            const range = high - low;
+            const percentage = range > 0 ? ((mid - low) / range) * 100 : 50;
+
+            const fill = document.getElementById('progressFill');
+            fill.style.width = `${percentage}%`;
+            fill.textContent = `Testing: ${mid} kg`;
+        }
+
+        // Check feasibility
+        function checkFeasibility(capacity) {
+            const dayGroups = [];
+            let currentDay = [];
+            let currentWeight = 0;
+
+            for (const pkg of packages) {
+                if (currentWeight + pkg <= capacity) {
+                    currentDay.push(pkg);
+                    currentWeight += pkg;
+                } else {
+                    if (currentDay.length > 0) {
+                        dayGroups.push([...currentDay]);
+                    }
+                    currentDay = [pkg];
+                    currentWeight = pkg;
+                }
+            }
+
+            if (currentDay.length > 0) {
+                dayGroups.push([...currentDay]);
+            }
+
+            return {
+                feasible: dayGroups.length <= targetDays,
+                daysNeeded: dayGroups.length,
+                dayGroups
+            };
+        }
+
+        // Display packages
+        function displayPackages(capacity, dayGroups, daysNeeded) {
+            const container = document.getElementById('daysArea');
+            document.getElementById('capacityBadge').textContent = `Capacity: ${capacity} kg`;
+
+            container.innerHTML = '';
+
+            dayGroups.forEach((group, dayIndex) => {
+                const dayDiv = document.createElement('div');
+                dayDiv.className = 'day-card';
+                dayDiv.style.animationDelay = `${dayIndex * 0.05}s`;
+
+                const totalWeight = group.reduce((a, b) => a + b, 0);
+
+                dayDiv.innerHTML = `
+                    <div class="day-header">
+                        <div class="day-label">📅 Day ${dayIndex + 1}</div>
+                        <div class="day-weight">Total: ${totalWeight} / ${capacity} kg</div>
+                    </div>
+                    <div class="packages-row" id="day-${dayIndex}"></div>
+                `;
+
+                container.appendChild(dayDiv);
+
+                const packagesRow = dayDiv.querySelector(`#day-${dayIndex}`);
+                group.forEach((weight, pkgIndex) => {
+                    setTimeout(() => {
+                        const packageEl = document.createElement('div');
+                        packageEl.className = 'package-box';
+                        packageEl.textContent = weight;
+                        packageEl.style.animationDelay = `${pkgIndex * 0.03}s`;
+                        packagesRow.appendChild(packageEl);
+                    }, pkgIndex * 30);
+                });
+            });
+
+            // Summary
+            setTimeout(() => {
+                const summary = document.createElement('div');
+                summary.className = 'info-box';
+                summary.innerHTML = `
+                    <div class="info-title">📊 Feasibility Check Result:</div>
+                    <div class="info-content">
+                        Testing capacity = <strong>${capacity} kg</strong> → Requires <strong>${daysNeeded} days</strong> to ship all ${packages.length} packages. 
+                        Target: <strong>${targetDays} days</strong>. 
+                        ${daysNeeded <= targetDays ? '✅ <strong>Feasible</strong> - can ship within deadline!' : '❌ <strong>Not feasible</strong> - exceeds deadline.'}
+                    </div>
+                `;
+                container.appendChild(summary);
+            }, dayGroups.length * 50);
+        }
+
+        // Sleep
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        // Run algorithm
+        async function runAlgorithm() {
+            if (isRunning) return;
+
+            isRunning = true;
+            document.getElementById('runBtn').disabled = true;
+            document.getElementById('generateBtn').disabled = true;
+
+            low = Math.max(...packages);
+            high = packages.reduce((a, b) => a + b, 0);
+            answer = -1;
+            currentIteration = 0;
+            maxIterations = Math.ceil(Math.log2(high - low + 1));
+
+            const isLearning = currentMode === 'learning';
+            const delay = isLearning ? 3500 : 800;
+
+            while (low <= high) {
+                currentIteration++;
+                updateComplexity();
+
+                mid = Math.floor((low + high) / 2);
+
+                updateSearchDisplay();
+                
+                if (isLearning) {
+                    showExplanation(`🔍 Iteration ${currentIteration}: Binary search testing capacity = ${mid} kg. Running greedy check to see if we can ship all packages in ${targetDays} days...`);
+                    await sleep(delay);
+                } else {
+                    showExplanation(`⚡ Iteration ${currentIteration}: Testing mid = ${mid} kg...`);
+                    await sleep(delay);
+                }
+
+                const { feasible, daysNeeded, dayGroups } = checkFeasibility(mid);
+                displayPackages(mid, dayGroups, daysNeeded);
+
+                await sleep(isLearning ? delay : delay / 2);
+
+                if (feasible) {
+                    answer = mid;
+                    
+                    if (isLearning) {
+                        showDecision(`✅ Capacity <span class="decision-highlight">${mid} kg</span> is <strong>FEASIBLE</strong> because <span class="decision-highlight">${daysNeeded} days ≤ ${targetDays} days</span>. This could be the answer, but we'll search LEFT (lower values) to find the minimum possible capacity.`);
+                        await sleep(delay);
+                        showExplanation(`✅ Feasible! Since we found a working capacity, let's try smaller. Setting high = mid - 1 = ${mid - 1}. Searching lower capacities to minimize...`);
+                        await sleep(delay);
+                    } else {
+                        showDecision(`✅ <span class="decision-highlight">${mid} kg</span> works → Search lower`);
+                        await sleep(delay / 2);
+                    }
+                    
+                    high = mid - 1;
+                } else {
+                    if (isLearning) {
+                        showDecision(`❌ Capacity <span class="decision-highlight">${mid} kg</span> is <strong>NOT FEASIBLE</strong> because <span class="decision-highlight">${daysNeeded} days > ${targetDays} days</span>. We need MORE capacity, so we'll search RIGHT (higher values).`);
+                        await sleep(delay);
+                        showExplanation(`❌ Not feasible! Too many days needed. Setting low = mid + 1 = ${mid + 1}. Searching higher capacities...`);
+                        await sleep(delay);
+                    } else {
+                        showDecision(`❌ <span class="decision-highlight">${mid} kg</span> fails → Search higher`);
+                        await sleep(delay / 2);
+                    }
+                    
+                    low = mid + 1;
+                }
+            }
+
+            showResult();
+        }
+
+        // Show result
+        function showResult() {
+            isRunning = false;
+
+            document.getElementById('resultCard').style.display = 'block';
+
+            const n = packages.length;
+            const m = packages.reduce((a, b) => a + b, 0);
+            const totalOps = n * Math.ceil(Math.log2(m));
+
+            if (answer === -1) {
+                document.getElementById('resultValue').textContent = 'No Solution';
+                showExplanation('❌ No valid capacity found. Please check your inputs.');
+                showDecision('❌ Algorithm could not find a valid solution with given constraints.');
+            } else {
+                document.getElementById('resultValue').textContent = answer;
+                showExplanation(`🎉 Binary search complete! Found minimum capacity in ${currentIteration} iterations. Total time complexity: O(${n} × log ${m}) ≈ ${totalOps} operations.`);
+                showDecision(`🎯 <strong>FINAL ANSWER:</strong> Minimum ship capacity = <span class="decision-highlight">${answer} kg</span>. This is the smallest capacity that allows shipping all packages within ${targetDays} days while maintaining package order.`);
+
+                const { dayGroups, daysNeeded } = checkFeasibility(answer);
+                displayPackages(answer, dayGroups, daysNeeded);
+            }
+
+            document.getElementById('runBtn').disabled = true;
+            document.getElementById('generateBtn').disabled = false;
+        }
+
+        // Binary rain effect
+        function createBinaryRain() {
+            const container = document.querySelector('.animated-bg');
+            const binaryChars = ['0', '1', 'L', 'H', 'M'];
+            
+            function createParticle() {
+                const particle = document.createElement('div');
+                particle.className = 'binary-particle';
+                particle.textContent = binaryChars[Math.floor(Math.random() * binaryChars.length)];
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDuration = (Math.random() * 10 + 8) + 's';
+                particle.style.animationDelay = Math.random() * 5 + 's';
+                
+                container.appendChild(particle);
+                
+                setTimeout(() => {
+                    particle.remove();
+                }, (parseFloat(particle.style.animationDuration) + parseFloat(particle.style.animationDelay)) * 1000);
+            }
+            
+            for (let i = 0; i < 15; i++) {
+                setTimeout(createParticle, i * 400);
+            }
+            
+            setInterval(createParticle, 2000);
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            createBinaryRain();
+        });
+
+        // Element SDK
+        async function onConfigChange(config) {
+            const mainTitle = config.main_title || defaultConfig.main_title;
+            const subtitle = config.subtitle || defaultConfig.subtitle;
+
+            document.getElementById('mainTitle').textContent = mainTitle;
+            document.getElementById('subtitle').textContent = subtitle;
+        }
+
+        function mapToCapabilities(config) {
+            return {
+                recolorables: [],
+                borderables: [],
+                fontEditable: undefined,
+                fontSizeable: undefined
+            };
+        }
+
+        function mapToEditPanelValues(config) {
+            return new Map([
+                ["main_title", config.main_title || defaultConfig.main_title],
+                ["subtitle", config.subtitle || defaultConfig.subtitle]
+            ]);
+        }
+
+        if (window.elementSdk) {
+            window.elementSdk.init({
+                defaultConfig,
+                onConfigChange,
+                mapToCapabilities,
+                mapToEditPanelValues
+            });
+        }
+    </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9b26501de68484d1',t:'MTc2NjQ3NjY5Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
